@@ -12,10 +12,10 @@ class DAGExecutionConfig:
     """DAG 执行配置"""
     max_concurrency: int = 5               # 最大并行度
     dependency_timeout: float = 600.0      # 依赖等待超时 / s
-    check_interval: float = 5.0            # 依赖检查间隔 / s
+    check_interval: float = 5.0            # 增量依赖检查间隔 / s
     pass_dependency_results: bool = True   # 是否传递依赖结果
     retry_on_failure: bool = True          # 失败时是否重试
-    max_retries: int = 2                   # 最大重试次数
+    max_retries: int = 3                   # 最大重试次数
 
 
 @dataclass
@@ -76,7 +76,7 @@ class DAGExecutor:
         if not graph.nodes:
             return DAGExecutionResult(success=True)
 
-        # 先验证 DAG
+        # 验证dag是否出现了一个环结构
         is_valid, cycle = graph.validate()
         if not is_valid:
             return DAGExecutionResult(
@@ -270,7 +270,7 @@ class DAGExecutor:
             if step_result.success:
                 completed.add(node_id)
             else:
-                # 重试逻辑
+                # 重试逻辑 --> 防止在react最后一步得到了答案 但json解析错误的情况
                 if self.config.retry_on_failure and step.retry_count < step.max_retries:
                     step.retry_count += 1
                     retry_result = step_executor(step, dep_results)
@@ -282,25 +282,79 @@ class DAGExecutor:
                 else:
                     failed.add(node_id)
 
-        with ThreadPoolExecutor(max_workers=self.config.max_concurrency) as executor:
-            # 提交所有任务
-            futures_map: Dict[Future, str] = {}
-            for node_id in graph.nodes:
-                future = executor.submit(execute_node, node_id)
-                futures_map[future] = node_id
-
-            # 收集结果
-            for future in as_completed(futures_map):
-                try:
-                    future.result()
-                except Exception as exc:
-                    node_id = futures_map[future]
-                    results[node_id] = StepResult(
-                        step_id=node_id,
-                        success=False,
-                        error=str(exc),
-                    )
-                    failed.add(node_id)
+        """
+        线程池知识点：
+            线程池就是预先创建一组线程 --> 任务提交到队列，线程从队列中取任务执行 --> 执行完一个任务后，线程复用去执行下一个任务
+            一个简单的例子：
+                ```python
+                from concurrent.futures import ThreadPoolExecutor
+                import time
+                def task(n):
+                    time.sleep(1)
+                    return n * 2
+                # 创建包含3个线程的线程池
+                with ThreadPoolExecutor(max_workers=3) as executor:
+                    # 提交单个任务
+                    future = executor.submit(task, 5)
+                    result = future.result()  # 等待结果
+                    print(result)  # 输出: 10
+                ```
+            批量提交任务:
+                ```python
+                def task(n):
+                    time.sleep(1)
+                    return n * 2
+                with ThreadPoolExecutor(max_workers=3) as executor:
+                    # 方式1: 使用 map（保持顺序）
+                    results = executor.map(task, [1, 2, 3, 4, 5])
+                    for result in results:
+                        print(result)  # 2, 4, 6, 8, 10 (按顺序)
+                    # 方式2: 批量提交（谁先完成谁先返回）
+                    futures = [executor.submit(task, i) for i in range(1, 6)]
+                    for future in as_completed(futures):
+                        print(future.result())  # 顺序不确定，谁先完成谁先打印
+                ```
+            特性和方法：
+                future = executor.submit(task, arg1, arg2, key=value) # 返回 Future 对象
+                results = executor.map(lambda x: x*2, [1,2,3,4,5]) # map(func, *iterables, timeout=None) --> 保持顺序，阻塞直到所有完成
+                executor.shutdown(wait=True)  # 等待所有任务完成
+                executor.shutdown(wait=False) # 立即返回，不等待
+                # 检查状态
+                future.done()        # 是否完成（成功或失败）
+                future.running()     # 是否正在执行
+                future.cancelled()   # 是否已取消
+                # 获取结果
+                future.result()                    # 阻塞直到完成
+                future.result(timeout=5)           # 带超时
+                # 异常处理
+                future.exception()                 # 获取异常
+                future.add_done_callback(callback) # 添加完成回调
+                future.cancel()  # 取消任务（仅在未运行时有效）
+                as_completed() --> 入参接受一个 Future 列表/字典 --> 谁先完成，谁先返回（不是按提交顺序），并且返回的是已经完成的 Future 对象
+        """
+        # TODO 生产/预发布/测试/开发环境需要使用线程池 --> 本地开发环境debug的时候需要注释掉
+        # with ThreadPoolExecutor(max_workers=self.config.max_concurrency) as executor:
+        #     # 提交所有任务
+        #     futures_map: Dict[Future, str] = {}
+        #     for node_id in graph.nodes:
+        #         future = executor.submit(execute_node, node_id)
+        #         futures_map[future] = node_id
+        #
+        #     # 收集结果
+        #     for future in as_completed(futures_map):
+        #         try:
+        #             future.result()
+        #         except Exception as exc:
+        #             node_id = futures_map[future]
+        #             results[node_id] = StepResult(
+        #                 step_id=node_id,
+        #                 success=False,
+        #                 error=str(exc),
+        #             )
+        #             failed.add(node_id)
+        # TODO debug版本: 请注意注释掉 然后打开线程池
+        for node_id in graph.nodes:
+            execute_node(node_id)
 
         total = len(graph.nodes)
         return DAGExecutionResult(
@@ -317,14 +371,11 @@ class DAGExecutor:
         completed: Set[str],
         failed: Set[str],
     ) -> bool:
-        """
-        等待依赖完成
-
-        参考 Shannon 的 waitForDependencies：
-        增量检查而非死等，有超时机制
-
-        Returns:
-            True 如果所有依赖成功完成，False 如果有依赖失败或超时
+        """等待依赖完成
+            参考 Shannon 的 waitForDependencies：
+            增量检查而非死等，有超时机制
+            Returns:
+                True 如果所有依赖成功完成，False 如果有依赖失败或超时
         """
         if not dependencies:
             return True

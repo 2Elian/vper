@@ -14,74 +14,20 @@ from data_agent.core.types import (
     StepStatus,
 )
 
-
-REPLANNER_SYSTEM_PROMPT = """You are a replanning agent that reviews execution results and decides what to do next.
-
-Given the current plan and execution results, you must decide:
-1. "continue" - Continue executing the next steps in the plan
-2. "replan" - Adjust the plan (add/remove/modify steps)
-3. "complete" - The task is complete, generate final result
-4. "fail" - The task cannot be completed
-
-Output format (JSON in code block):
-```json
-{
-  "decision": "continue",
-  "reason": "Step 1 completed successfully, step 2 is ready to execute",
-  "plan_updates": {
-    "add_steps": [],
-    "remove_steps": [],
-    "modify_steps": []
-  },
-  "final_result": null
-}
-```
-
-For "complete" decision:
-```json
-{
-  "decision": "complete",
-  "reason": "All steps completed successfully",
-  "plan_updates": null,
-  "final_result": {
-    "columns": ["col1", "col2"],
-    "rows": [["val1", "val2"]]
-  }
-}
-```
-
-Rules:
-1. If a step failed but can be retried with different approach, use "replan".
-2. If all steps are done and results are valid, use "complete".
-3. If remaining steps don't need execution, use "complete" with available results.
-4. If the task is fundamentally impossible, use "fail".
-"""
-
-
-class ReplannerAgent(ChatModelAgent):
-    """Replanner Agent - 重规划器
-        1. 审查 Executor 的执行结果
-        2. 决定是否继续执行、调整计划或完成
-        3. 更新 Session 中的 Plan
-        核心决策逻辑：
-            - 如果步骤成功，继续执行下一步
-            - 如果步骤失败，决定重试还是调整
-            - 如果计划完成，生成最终结果
-    """
-
+class ValidatorAgent(ChatModelAgent):
     def __init__(self, model: BaseLLMClient):
         super().__init__(model=model)
 
     @property
     def name(self) -> str:
-        return "Replanner"
+        return "Validator"
 
     @property
     def description(self) -> str:
-        return "Reviews execution results and decides to continue, replan, or complete."
+        return "Based on the knowledge and all the results from the preceding links, we conduct a deep verification to ensure the accuracy of the final result."
 
     def _build_system_prompt(self) -> str:
-        return REPLANNER_SYSTEM_PROMPT
+        pass
 
     def run(
         self,

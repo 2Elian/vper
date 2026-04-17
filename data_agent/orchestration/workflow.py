@@ -81,12 +81,14 @@ class PlanExecuteReplanWorkflow:
     完整流程：
         1. Phase 1: Workspace 冷启动
         2. Phase 2: Planner 生成计划 (写入 Session)
-        3. Phase 3: 循环执行
-           a. DAG Scheduler 获取就绪步骤
-           b. Executor 执行步骤
-           c. Replanner 审查结果
-           d. 重复直到计划完成或达到最大迭代
-        4. Phase 4: 合成最终答案
+        3. Phase 3: 循环执行   --> 复杂任务自动激活DAG 简单任务按照顺序执行 中等任务并行执行
+           a. Executor 执行步骤
+           b. Replanner 审查结果
+           c. 重复直到计划完成或达到最大迭代
+        4. Phase 4: 验证Agent 验证是否答案通过
+           a. 通过 --> loop to Phase 5
+           b. 不通过 --> loop to Replaner* times=2
+        5. Phase 4: 合成最终答案
     """
 
     def __init__(
@@ -253,6 +255,7 @@ class PlanExecuteReplanWorkflow:
                 updated_plan = session.get("plan")
                 if updated_plan:
                     plan = updated_plan
+        # 在最后，用一个验证agent，理解knowledge，和前置链路产生的sesstion，判断结果的正确性。然后给出是否正确，正确则走到phase，错误则给到replaner，重新执行。
 
         # Phase 4: 合成最终答案
         final_result = self._synthesize_answer(task_id, plan, session, step_results)
@@ -265,7 +268,7 @@ class PlanExecuteReplanWorkflow:
 
     def run_with_dag(self, task_id: str, question: str, context_dir: Path, difficulty: str = "") -> WorkflowResult:
         """
-        与 run() 的区别：
+        还不能用呢！
             - 使用 DAGExecutor 批量调度就绪步骤
             - 支持并行执行独立步骤
             - 依赖等待和结果传递

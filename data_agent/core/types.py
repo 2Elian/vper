@@ -28,17 +28,17 @@ class PlanStep:
     """
     step_id: str
     description: str
-    hint: str = ""
+    hint: str = "" # 执行提示
     depends_on: List[str] = field(default_factory=list)
-    produces: List[str] = field(default_factory=list)
-    consumes: List[str] = field(default_factory=list)
+    produces: List[str] = field(default_factory=list) # 该步骤产出的数据主题/名称
+    consumes: List[str] = field(default_factory=list) # 该步骤需要消费的数据主题
     suggested_tools: List[str] = field(default_factory=list)
     status: StepStatus = StepStatus.PENDING
     result: Optional[Dict[str, Any]] = None
     max_steps: int = 8
     max_retries: int = 2
     retry_count: int = 0
-    priority: int = 0
+    priority: int = 0 # 执行优先级 --> 数字越大优先级越高
 
     def is_ready(self, completed_steps: Set[str]) -> bool:
         """检查步骤是否可以执行 --> 依赖已满足"""
@@ -146,7 +146,7 @@ class Plan:
 
 @dataclass
 class StepResult:
-    """步骤执行结果"""
+    """react全局步骤执行结果"""
     step_id: str
     success: bool
     data: Any = None
@@ -164,6 +164,25 @@ class StepResult:
             "steps_taken": self.steps_taken,
             "raw_response": self.raw_response,
             "tool_calls": self.tool_calls,
+        }
+@dataclass
+class StepRecord:
+    """ReAct局部步骤执行结果"""
+    step_index: int
+    thought: str
+    action: str
+    action_input: Dict[str, Any]
+    raw_response: str
+    observation: Dict[str, Any]
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "step_index": self.step_index,
+            "thought": self.thought,
+            "action": self.action,
+            "action_input": self.action_input,
+            "raw_response": self.raw_response,
+            "observation": self.observation,
         }
 
 

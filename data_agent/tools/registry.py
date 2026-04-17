@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from typing import Any, Callable, Dict, Optional
 from pathlib import Path
 
-
 @dataclass()
 class ToolSpec:
     """工具规格"""
@@ -82,35 +81,34 @@ def create_tool_registry(context_dir: Optional[Path] = None) -> ToolRegistry:
             raise FileNotFoundError(f"File not found: {relative_path}")
         return candidate
 
-    # 1. list_context
-    def _list_context(action_input: Dict[str, Any]) -> ToolResult:
-        import os
-        max_depth = int(action_input.get("max_depth", 4))
-        entries = []
-
-        def walk(path: Path, depth: int) -> None:
-            if depth > max_depth:
-                return
-            for child in sorted(path.iterdir(), key=lambda item: (item.is_file(), item.name)):
-                rel_path = child.relative_to(_ctx_dir).as_posix()
-                entries.append({
-                    "path": rel_path,
-                    "kind": "dir" if child.is_dir() else "file",
-                    "size": child.stat().st_size if child.is_file() else None,
-                })
-                if child.is_dir():
-                    walk(child, depth + 1)
-
-        if _ctx_dir:
-            walk(_ctx_dir, 1)
-        return ToolResult(ok=True, content={"root": str(_ctx_dir), "entries": entries})
-
-    registry.register(
-        name="list_context",
-        description="List files and directories available under context.",
-        input_schema={"max_depth": 4},
-        handler=_list_context,
-    )
+    # # 1. list_context
+    # def _list_context(action_input: Dict[str, Any]) -> ToolResult:
+    #     max_depth = int(action_input.get("max_depth", 4))
+    #     entries = []
+    #
+    #     def walk(path: Path, depth: int) -> None:
+    #         if depth > max_depth:
+    #             return
+    #         for child in sorted(path.iterdir(), key=lambda item: (item.is_file(), item.name)):
+    #             rel_path = child.relative_to(_ctx_dir).as_posix()
+    #             entries.append({
+    #                 "path": rel_path,
+    #                 "kind": "dir" if child.is_dir() else "file",
+    #                 "size": child.stat().st_size if child.is_file() else None,
+    #             })
+    #             if child.is_dir():
+    #                 walk(child, depth + 1)
+    #
+    #     if _ctx_dir:
+    #         walk(_ctx_dir, 1)
+    #     return ToolResult(ok=True, content={"root": str(_ctx_dir), "entries": entries})
+    #
+    # registry.register(
+    #     name="list_context",
+    #     description="List files and directories available under context.",
+    #     input_schema={"max_depth": 4},
+    #     handler=_list_context,
+    # )
 
     # 2. read_csv
     def _read_csv(action_input: Dict[str, Any]) -> ToolResult:
@@ -281,7 +279,22 @@ def create_tool_registry(context_dir: Optional[Path] = None) -> ToolRegistry:
         handler=_execute_python,
     )
 
-    # 8. answer (终端动作)
+    # 8. return_result 提交当前步骤的答案
+    def _return_result(action_input: Dict[str, Any]) -> ToolResult:
+        return ToolResult(
+            ok=True,
+            content={"status": "submitted"},
+            is_terminal=False,
+        )
+
+    registry.register(
+        name="return_result",
+        description="Submit the answer for the current step",
+        input_schema={"submit": "your_data"},
+        handler=_return_result,
+    )
+
+    # 9. answer (终端动作)
     def _answer(action_input: Dict[str, Any]) -> ToolResult:
         columns = action_input.get("columns", [])
         rows = action_input.get("rows", [])

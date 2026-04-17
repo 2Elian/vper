@@ -1,18 +1,12 @@
-"""
-Workspace - 共享工作空间
-参考 data_agent 的 Workspace 实现，增加 Session 支持。
-冷启动一次性扫描所有文件，建立 Schema 地图。
-"""
-
 import csv
 import json
+import re
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 from data_agent.core.types import TaskContext
-
 
 @dataclass
 class FileInfo:
@@ -33,6 +27,8 @@ class SchemaInfo:
     tables: List[str] = field(default_factory=list)
     table_columns: Dict[str, List[str]] = field(default_factory=dict)
 
+def toc(md):
+    return '\n'.join(m.group(0) for m in re.finditer(r'^(#{1,6}\s+.+)$', md, re.M))
 
 class Workspace:
     """共享工作空间
@@ -86,13 +82,13 @@ class Workspace:
         lines = ["=== Data Source Overview ==="]
         for rel_path, schema in sorted(self.schemas.items()):
             if schema.file_type == "csv":
-                lines.append(f"[CSV] {rel_path} ({schema.row_count}行): {', '.join(schema.columns[:10])}")
+                lines.append(f"[CSV] {rel_path} ({schema.row_count} line): {', '.join(schema.columns)}")
             elif schema.file_type == "json":
-                lines.append(f"[JSON] {rel_path} ({schema.row_count}条): {', '.join(schema.columns[:10])}")
+                lines.append(f"[JSON] {rel_path} ({schema.row_count} pieces): {', '.join(schema.columns)}")
             elif schema.file_type == "db":
                 for table_name in schema.tables:
                     cols = schema.table_columns.get(table_name, [])
-                    lines.append(f"[DB] {rel_path} -> {table_name} (列: {', '.join(cols[:10])})")
+                    lines.append(f"[DB] {rel_path} -> {table_name} (column: {', '.join(cols)})")
 
         for rel_path, info in sorted(self.files.items()):
             if info.file_type == "doc":
@@ -102,6 +98,7 @@ class Workspace:
             lines.append("")
             lines.append("=== Knowledge Guide Available ===")
             lines.append(f"length: {len(self.knowledge)} character")
+            lines.append(f"structure of knowledge document: \n --- \n {toc(self.knowledge)}\n ---")
 
         return "\n".join(lines)
 
@@ -213,7 +210,10 @@ class Workspace:
                         schema.columns = list(data[0].keys())
                     schema.row_count = len(data)
                 elif isinstance(data, dict):
-                    schema.columns = list(data.keys())
+                    table_name = data.get("table")
+                    records = data.get("records")
+                    schema.columns = list(records[0].keys())
+                    schema.row_count = len(records)
 
             elif info.file_type == "db":
                 schema.tables, schema.table_columns = self._inspect_db(full_path)

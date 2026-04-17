@@ -3,7 +3,7 @@ import re
 import logging
 from abc import ABC, abstractmethod
 from typing import Any, Dict, Optional, Union, Tuple, List
-
+from data_agent.tools import ToolRegistry
 from data_agent.utils import get_logger
 
 from data_agent.core.types import (
@@ -39,7 +39,7 @@ class Agent(ABC):
 
 
 class ChatModelAgent(Agent):
-    def __init__(self, model: BaseLLMClient, tools: Any = None):
+    def __init__(self, model: BaseLLMClient, tools: ToolRegistry = None):
         self._model = model
         self._tools = tools
 

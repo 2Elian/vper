@@ -41,7 +41,7 @@ Output format (JSON in code block):
       "depends_on": [],
       "produces": ["file_schema"],
       "consumes": [],
-      "suggested_tools": ["read_csv", "list_context"],
+      "suggested_tools": ["read_csv", "read_json"],
       "max_steps": 4,
       "priority": 10
     },
@@ -68,7 +68,7 @@ Rules:
 5. Always include step_id, description, and depends_on for each step.
 6. Priority: higher number = higher priority when multiple steps are ready.
 """
-
+# TODO 限制一下，看看在哪个计划中提交answer 并且能自主选择子Agent进行操作
 
 class PlannerAgent(ChatModelAgent):
     """参考 Eino 的 Planner：
@@ -240,7 +240,7 @@ class PlannerAgent(ChatModelAgent):
                 description="读取相关数据文件，理解数据结构",
                 hint="查看数据文件列名和结构",
                 produces=["file_schema"],
-                suggested_tools=["list_context", "read_csv", "read_json", "inspect_sqlite_schema"],
+                suggested_tools=["read_csv", "read_json", "inspect_sqlite_schema"],
                 max_steps=4,
                 priority=10,
             ),

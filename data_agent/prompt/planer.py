@@ -27,7 +27,7 @@ Output format (JSON in code block):
       "depends_on": [],
       "produces": ["file_schema"],
       "consumes": [],
-      "suggested_tools": ["read_csv", "list_context"],
+      "suggested_tools": ["read_csv", "read_json"],
       "max_steps": 4,
       "priority": 10
     },
@@ -91,7 +91,7 @@ PLANNER_SYSTEM_PROMPT_CN = """# 您是一位数据分析规划专家。
       "depends_on": [],
       "produces": ["file_schema"],
       "consumes": [],
-      "suggested_tools": ["read_csv", "list_context"],
+      "suggested_tools": ["read_csv", "raad_json"],
       "max_steps": 4,
       "priority": 10
     },

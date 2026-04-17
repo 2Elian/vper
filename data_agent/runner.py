@@ -175,7 +175,7 @@ def run_from_baseline_config(config_path: str, task_id: Optional[str] = None) ->
         context_dir=context_dir,
         difficulty=difficulty,
         model_config=model_config,
-        dag_enabled=True,
+        dag_enabled=False,
     )
 
     logger.info("\n" + "=" * 60)

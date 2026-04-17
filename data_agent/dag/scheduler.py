@@ -1,13 +1,3 @@
-"""
-DAG Scheduler - DAG 调度器
-
-参考 Shannon 的 DAG 调度设计，结合 Plan 执行：
-- 从 Plan 构建 DAG
-- 选择执行策略
-- 调度执行并返回结果
-"""
-
-
 from typing import Any, Callable, Dict, List, Optional, Set
 
 from data_agent.core.types import Plan, PlanStep, StepResult, StepStatus

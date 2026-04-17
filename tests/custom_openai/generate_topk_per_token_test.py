@@ -8,11 +8,27 @@ if __name__ == "__main__":
     model = OpenAIClient(
         model_name = model_name,
         api_key = api_key,
-        base_url = base_url
+        base_url = base_url,
+        tokenizer=tokenizer
     )
+    sys_prompt = """# 你是一个质量评分大师
+    
+    # 评分维度
+    1. 这条回复与问题的相关性
+    2. 回复是否包含违规内容
+    # 输出：
+    只输出最终的分数(0-1之间)
+    """
+    user_prompt = """
+    # 用户的问题：
+    {question}
+    # 回复的答案：
+    {answer}
+    """
+    user_submit_pro = user_prompt.format(question = "你好", answer ="你好我是glm模型，有什么能够帮助你的？")
     messages = [
-        {"role": "system", "content": "you are a helpful assistant"},
-        {"role": "user", "content": "你好啊，请问你是什么模型"}
+        {"role": "system", "content": sys_prompt},
+        {"role": "user", "content": user_submit_pro}
     ]
     tokens = model.sync_generate_topk_per_token(current_messages=messages)
     print(tokens)
