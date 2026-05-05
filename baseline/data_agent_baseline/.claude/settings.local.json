@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c ':*)",
+      "Bash(python test_swarm.py)",
+      "WebSearch",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('elian_data_agent/agents/validator.py', encoding='utf-8'\\).read\\(\\)\\); print\\('validator.py OK'\\)\")",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('elian_data_agent/orchestration/workflow.py', encoding='utf-8'\\).read\\(\\)\\); print\\('workflow.py OK'\\)\")",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('elian_data_agent/runner.py', encoding='utf-8'\\).read\\(\\)\\); print\\('runner.py OK'\\)\")",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('elian_data_agent/core/types.py', encoding='utf-8'\\).read\\(\\)\\); print\\('types.py OK'\\)\")",
+      "Bash(python -c ' *)",
+      "WebFetch(domain:agentscope-ai.github.io)",
+      "Bash(conda activate *)",
+      "Bash(pip install *)",
+      "Read(//d/Anaconda/envs/pycra/lib/site-packages/openjudge/graders/text/**)",
+      "Read(//d/Anaconda/envs/pycra/lib/site-packages/openjudge/graders/common/**)"
+    ]
+  }
+}

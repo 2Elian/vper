@@ -1,0 +1,8 @@
+/.idea
+/tests/other
+/task_11_trajectory.md
+/.vscode
+.env*
+__pycache__/
+*.py[cod]
+*$py.class

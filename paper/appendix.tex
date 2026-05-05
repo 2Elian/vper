@@ -1,0 +1,132 @@
+\appendix
+
+\section{Detailed Per-Task Results}
+
+Table~\ref{tab:per-task} shows the per-task results for the ReAct baseline and VPER across all 50 tasks.
+
+\begin{table}[ht]
+\centering
+\caption{Per-task accuracy comparison between ReAct baseline and VPER. $\checkmark$ = correct, $\times$ = incorrect, -- = failed (no answer produced).}
+\label{tab:per-task}
+\scriptsize
+\begin{tabular}{llcc}
+\toprule
+\textbf{Task ID} & \textbf{Difficulty} & \textbf{ReAct} & \textbf{VPER} \\
+\midrule
+task\_11  & easy    & $\times$ & $\times$ \\
+task\_19  & easy    & $\checkmark$ & $\checkmark$ \\
+task\_22  & easy    & $\times$ & $\times$ \\
+task\_24  & easy    & $\checkmark$ & $\checkmark$ \\
+task\_25  & easy    & $\times$ & $\checkmark$ \\
+task\_26  & easy    & $\checkmark$ & $\checkmark$ \\
+task\_27  & easy    & $\times$ & $\times$ \\
+task\_38  & easy    & $\times$ & $\checkmark$ \\
+task\_64  & easy    & $\checkmark$ & $\checkmark$ \\
+task\_67  & easy    & $\times$ & $\times$ \\
+task\_74  & easy    & $\checkmark$ & $\checkmark$ \\
+task\_75  & easy    & -- & $\checkmark$ \\
+task\_80  & easy    & $\times$ & $\times$ \\
+task\_86  & easy    & $\times$ & $\times$ \\
+task\_89  & easy    & $\times$ & $\checkmark$ \\
+\midrule
+task\_145 & medium  & $\times$ & $\checkmark$ \\
+task\_163 & medium  & $\times$ & $\times$ \\
+task\_169 & medium  & $\times$ & $\times$ \\
+task\_173 & medium  & $\times$ & $\times$ \\
+task\_180 & medium  & $\times$ & $\times$ \\
+task\_194 & medium  & $\times$ & $\checkmark$ \\
+task\_196 & medium  & $\times$ & $\times$ \\
+task\_199 & medium  & $\times$ & $\times$ \\
+task\_200 & medium  & $\times$ & $\times$ \\
+task\_214 & medium  & -- & $\times$ \\
+task\_218 & medium  & $\times$ & $\times$ \\
+task\_243 & medium  & $\checkmark$ & $\checkmark$ \\
+task\_249 & medium  & $\times$ & $\times$ \\
+task\_250 & medium  & $\times$ & $\times$ \\
+task\_257 & medium  & $\times$ & $\checkmark$ \\
+task\_259 & medium  & $\times$ & $\times$ \\
+task\_261 & medium  & $\checkmark$ & $\checkmark$ \\
+task\_269 & medium  & $\checkmark$ & $\checkmark$ \\
+task\_283 & medium  & $\checkmark$ & $\checkmark$ \\
+task\_287 & medium  & $\checkmark$ & $\checkmark$ \\
+task\_292 & medium  & $\checkmark$ & $\checkmark$ \\
+task\_303 & medium  & $\times$ & $\times$ \\
+task\_305 & medium  & $\times$ & $\times$ \\
+\midrule
+task\_330 & hard    & $\checkmark$ & $\checkmark$ \\
+task\_344 & hard    & $\times$ & $\times$ \\
+task\_349 & hard    & $\times$ & $\checkmark$ \\
+task\_350 & hard    & -- & $\times$ \\
+task\_352 & hard    & $\times$ & $\times$ \\
+task\_355 & hard    & $\times$ & $\times$ \\
+task\_379 & hard    & $\times$ & $\times$ \\
+task\_396 & hard    & $\times$ & $\checkmark$ \\
+task\_408 & hard    & $\times$ & $\times$ \\
+task\_415 & hard    & $\checkmark$ & $\checkmark$ \\
+\midrule
+task\_418 & extreme & $\times$ & $\times$ \\
+task\_420 & extreme & $\times$ & $\times$ \\
+\midrule
+\textbf{Total Correct} & & \textbf{13} & \textbf{22} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\section{Validator Score Details}
+
+Table~\ref{tab:validator-detail} shows the detailed Validator scores for selected tasks.
+
+\begin{table}[ht]
+\centering
+\caption{Validator score breakdown for representative tasks. $\text{score} = 0.6 \times \text{answer} + 0.4 \times \text{trajectory}$.}
+\label{tab:validator-detail}
+\scriptsize
+\begin{tabular}{lcccl}
+\toprule
+\textbf{Task} & \textbf{Answer} & \textbf{Trajectory} & \textbf{Final} & \textbf{Decision} \\
+\midrule
+task\_19  & 0.95 & 0.92 & 0.938 & Accept \\
+task\_24  & 0.90 & 0.88 & 0.892 & Accept \\
+task\_64  & 0.85 & 0.78 & 0.822 & Accept \\
+task\_145 & 0.80 & 0.85 & 0.820 & Accept \\
+task\_261 & 0.92 & 0.90 & 0.912 & Accept \\
+task\_330 & 0.88 & 0.82 & 0.856 & Accept \\
+task\_11  & 0.40 & 0.42 & 0.408 & Reject \\
+task\_80  & 0.55 & 0.50 & 0.530 & Reject \\
+task\_344 & 0.35 & 0.45 & 0.390 & Reject \\
+task\_396 & 0.60 & 0.55 & 0.580 & Reject \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\section{Execution Trajectory Example}
+
+\begin{findingbox}
+\textbf{Task 145:} ``Among the events attended by more than 10 members of the Student\_Club, how many of them are meetings?''
+
+\vspace{0.5em}
+\textbf{Step 1 (Planner):} Generated 3-step plan:
+\begin{itemize}[leftmargin=1.5em]
+    \item $s_1$: Read attendance CSV (produces: attendance\_schema)
+    \item $s_2$: Query event database schema (produces: event\_schema)
+    \item $s_3$: Join and aggregate with Python (depends: $s_1, s_2$)
+\end{itemize}
+
+\textbf{Step 2 (Executor):}
+\begin{itemize}[leftmargin=1.5em]
+    \item $s_1$: Read CSV $\to$ 326 rows, columns: [link\_to\_event, link\_to\_member]
+    \item $s_2$: Query DB $\to$ event table with 42 rows, columns include type, event\_name
+    \item $s_3$: Python execution $\to$ Join $\to$ Group by event $\to$ Count $>10$ $\to$ Filter meetings $\to$ \textbf{4}
+\end{itemize}
+
+\textbf{Step 3 (Validator):}
+\begin{itemize}[leftmargin=1.5em]
+    \item Answer score: 0.80 (correct data, clear reasoning)
+    \item Trajectory score: 0.85 (efficient steps, relevant actions)
+    \item Final score: $0.6 \times 0.80 + 0.4 \times 0.85 = 0.82 \geq 0.7$ $\to$ \textbf{Accept}
+\end{itemize}
+
+\textbf{Result:} Answer ``4'' submitted and verified correct.
+\end{findingbox}
