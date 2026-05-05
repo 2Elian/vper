@@ -1,0 +1,91 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand*\HyPL@Entry[1]{}
+\citation{brown2020language,touvron2023llama,yang2025qwen3}
+\citation{yao2022react,schick2023toolformer}
+\citation{liu2023agentbench}
+\citation{yao2022react}
+\HyPL@Entry{0<</S/D>>}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\citation{yao2023tree}
+\citation{gu2024survey}
+\citation{yao2022react}
+\citation{yao2022webshop}
+\citation{zhou2023webarena}
+\citation{shridharalfworld}
+\citation{shinn2023reflexion}
+\citation{plansolve2024}
+\citation{wei2022chain}
+\citation{wu2023autogen}
+\citation{babyagi2023}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{2}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}ReAct and Single-Agent Reasoning}{2}{subsection.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Plan-Execute-Replan Paradigm}{2}{subsection.2.2}\protected@file@percent }
+\citation{gu2024survey}
+\citation{schick2023toolformer}
+\citation{patil2024gorilla}
+\citation{li2023api}
+\citation{qintoolllm}
+\citation{tang2023toolalpaca}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}LLM-as-a-Judge and Verification}{3}{subsection.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Tool-Augmented Language Models}{3}{subsection.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Method}{3}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Problem Definition}{3}{subsection.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}System Architecture}{3}{subsection.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.1}Phase 1: Workspace Cold Start}{3}{subsubsection.3.2.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces VPER framework architecture. The system flows from User Input through Workspace Cold Start into the Planner $\to $ ReAct-Agent $\to $ Replanner loop. After the loop completes, the Validator evaluates the candidate answer. If accepted, the answer is submitted; if rejected, the Replanner adjusts the plan for another iteration.}}{4}{figure.1}\protected@file@percent }
+\newlabel{fig:framework}{{1}{4}{VPER framework architecture. The system flows from User Input through Workspace Cold Start into the Planner $\to $ ReAct-Agent $\to $ Replanner loop. After the loop completes, the Validator evaluates the candidate answer. If accepted, the answer is submitted; if rejected, the Replanner adjusts the plan for another iteration}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.2}Phase 2: Planner Agent}{4}{subsubsection.3.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.3}Phase 3: Execute-Replan Loop}{5}{subsubsection.3.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Executor Agent.}{5}{section*.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Replanner Agent.}{5}{section*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.4}Phase 4: Validator Agent}{5}{subsubsection.3.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Answer Evaluation (DataAnalysisGrader).}{5}{section*.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Trajectory Evaluation (TrajectoryComprehensiveGrader).}{5}{section*.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Aggregated Decision.}{6}{section*.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Experiments}{6}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Experimental Setup}{6}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Benchmark.}{6}{section*.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Models.}{6}{section*.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Configurations.}{6}{section*.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Main Results}{6}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Key observations:}{6}{section*.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Ablation Analysis}{6}{subsection.4.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Main results comparing ReAct baseline with VPER and ablation variants. Accuracy, failure rate, and average steps are reported per difficulty level. $\Delta $ shows relative improvement over baseline.}}{7}{table.1}\protected@file@percent }
+\newlabel{tab:main-results}{{1}{7}{Main results comparing ReAct baseline with VPER and ablation variants. Accuracy, failure rate, and average steps are reported per difficulty level. $\Delta $ shows relative improvement over baseline}{table.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Ablation study showing incremental accuracy improvements from each VPER component. Each addition contributes meaningfully, with the Validator providing the largest single improvement.}}{7}{figure.2}\protected@file@percent }
+\newlabel{fig:ablation}{{2}{7}{Ablation study showing incremental accuracy improvements from each VPER component. Each addition contributes meaningfully, with the Validator providing the largest single improvement}{figure.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Validator Effectiveness}{7}{subsection.4.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Validator agent behavior analysis. ``Accepted Correct'' = correctly accepted answers; ``Accepted Wrong'' = incorrectly accepted answers (false positives); ``Rejected $\to $ Corrected'' = answers initially wrong but corrected after replanning; ``Rejected $\to $ Still Wrong'' = answers still wrong after replanning attempts.}}{8}{table.2}\protected@file@percent }
+\newlabel{tab:validator}{{2}{8}{Validator agent behavior analysis. ``Accepted Correct'' = correctly accepted answers; ``Accepted Wrong'' = incorrectly accepted answers (false positives); ``Rejected $\to $ Corrected'' = answers initially wrong but corrected after replanning; ``Rejected $\to $ Still Wrong'' = answers still wrong after replanning attempts}{table.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Distribution of validation scores. The dashed line indicates the acceptance threshold $\tau = 0.7$. Tasks scoring below the threshold are rejected and sent back for replanning.}}{8}{figure.3}\protected@file@percent }
+\newlabel{fig:validator-score}{{3}{8}{Distribution of validation scores. The dashed line indicates the acceptance threshold $\tau = 0.7$. Tasks scoring below the threshold are rejected and sent back for replanning}{figure.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Error Analysis}{8}{subsection.4.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Case Study: Validator-Triggered Correction}{8}{subsection.4.6}\protected@file@percent }
+\bibstyle{unsrtnat}
+\bibdata{references}
+\bibcite{brown2020language}{{1}{2020}{{Brown et~al.}}{{Brown, Mann, Ryder, Subbiah, Kaplan, Dhariwal, Neelakantan, Shyam, Sastry, Askell, et~al.}}}
+\bibcite{touvron2023llama}{{2}{2023}{{Touvron et~al.}}{{Touvron, Lavril, Izacard, Martinet, Lachaux, Lacroix, Rozi{\`e}re, Goyal, Hambro, Azhar, et~al.}}}
+\bibcite{yang2025qwen3}{{3}{2025}{{Yang et~al.}}{{Yang, Li, Yang, Zhang, Hui, Zheng, Yu, Gao, Huang, Lv, et~al.}}}
+\bibcite{yao2022react}{{4}{2022{a}}{{Yao et~al.}}{{Yao, Zhao, Yu, Du, Shafran, Narasimhan, and Cao}}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Error category distribution comparison. VPER reduces errors across most categories, with the largest reductions in column name matching, filter condition errors, and cross-source integration failures. Unstructured document parsing remains an unsolved challenge.}}{9}{figure.4}\protected@file@percent }
+\newlabel{fig:error-categories}{{4}{9}{Error category distribution comparison. VPER reduces errors across most categories, with the largest reductions in column name matching, filter condition errors, and cross-source integration failures. Unstructured document parsing remains an unsolved challenge}{figure.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion}{9}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Limitations and Future Work.}{9}{section*.10}\protected@file@percent }
+\bibcite{schick2023toolformer}{{5}{2023}{{Schick et~al.}}{{Schick, Dwivedi-Yu, Dess{\`\i }, Raileanu, Lomeli, Hambro, Zettlemoyer, Cancedda, and Scialom}}}
+\bibcite{liu2023agentbench}{{6}{2023}{{Liu et~al.}}{{Liu, Yu, Zhang, Xu, Lei, Lai, Gu, Ding, Men, Yang, et~al.}}}
+\bibcite{yao2023tree}{{7}{2023}{{Yao et~al.}}{{Yao, Li, Zhao, et~al.}}}
+\bibcite{gu2024survey}{{8}{2024}{{Gu et~al.}}{{Gu, Jiang, Shi, Tan, Zhai, Xu, Li, Shen, Ma, Liu, et~al.}}}
+\bibcite{yao2022webshop}{{9}{2022{b}}{{Yao et~al.}}{{Yao, Chen, Yang, and Narasimhan}}}
+\bibcite{zhou2023webarena}{{10}{2023}{{Zhou et~al.}}{{Zhou, Xu, Zhu, Zhou, Lo, Sridhar, Cheng, Ou, Bisk, Fried, et~al.}}}
+\bibcite{shridharalfworld}{{11}{}{{Shridhar et~al.}}{{Shridhar, Yuan, Cote, Bisk, Trischler, and Hausknecht}}}
+\bibcite{shinn2023reflexion}{{12}{2023}{{Shinn et~al.}}{{Shinn, Cassano, Gopinath, Narasimhan, and Yao}}}
+\bibcite{plansolve2024}{{13}{2023}{{Wang et~al.}}{{Wang, Xu, Lan, Hu, Lan, Lee, and Lim}}}
+\bibcite{wei2022chain}{{14}{2022}{{Wei et~al.}}{{Wei, Wang, Schuurmans, Bosma, Xia, Chi, Le, Zhou, et~al.}}}
+\bibcite{wu2023autogen}{{15}{2023}{{Wu et~al.}}{{Wu, Bansal, Zhang, Wu, Li, Zhu, Jiang, Zhang, Zhang, Liu, et~al.}}}
+\bibcite{babyagi2023}{{16}{2023}{{Nakajima}}{{}}}
+\bibcite{patil2024gorilla}{{17}{2024}{{Patil et~al.}}{{Patil, Zhang, Wang, and Gonzalez}}}
+\bibcite{li2023api}{{18}{2023}{{Li et~al.}}{{Li, Zhao, Yu, Song, Li, Yu, Li, Huang, and Li}}}
+\bibcite{qintoolllm}{{19}{}{{Qin et~al.}}{{Qin, Liang, Ye, Zhu, Yan, Lu, Lin, Cong, Tang, Qian, et~al.}}}
+\bibcite{tang2023toolalpaca}{{20}{2023}{{Tang et~al.}}{{Tang, Deng, Lin, Han, Liang, Cao, and Sun}}}
+\gdef \@abspage@last{10}

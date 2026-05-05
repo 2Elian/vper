@@ -1,0 +1,17 @@
+driverStandingsId,raceId,driverId,points,position,positionText,wins,year,round,name,date
+11770,124,62,0.0,7,7,0,2002,1,Australian Grand Prix,2002-03-03
+11778,125,62,0.0,19,19,0,2002,2,Malaysian Grand Prix,2002-03-17
+11786,126,62,0.0,17,17,0,2002,3,Brazilian Grand Prix,2002-03-31
+11794,127,62,0.0,18,18,0,2002,4,San Marino Grand Prix,2002-04-14
+11802,128,62,0.0,16,16,0,2002,5,Spanish Grand Prix,2002-04-28
+11810,129,62,0.0,15,15,0,2002,6,Austrian Grand Prix,2002-05-12
+11818,130,62,0.0,14,14,0,2002,7,Monaco Grand Prix,2002-05-26
+11826,131,62,0.0,13,13,0,2002,8,Canadian Grand Prix,2002-06-09
+11834,132,62,0.0,12,12,0,2002,9,European Grand Prix,2002-06-23
+11842,133,62,0.0,11,11,0,2002,10,British Grand Prix,2002-07-07
+11850,134,62,0.0,10,10,0,2002,11,French Grand Prix,2002-07-21
+11858,135,62,0.0,9,9,0,2002,12,German Grand Prix,2002-07-28
+11866,136,62,0.0,8,8,0,2002,13,Hungarian Grand Prix,2002-08-18
+11874,137,62,0.0,7,7,0,2002,14,Belgian Grand Prix,2002-09-01
+11882,138,62,0.0,6,6,0,2002,15,Italian Grand Prix,2002-09-15
+11890,139,62,0.0,5,5,0,2002,16,United States Grand Prix,2002-09-29

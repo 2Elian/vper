@@ -1,0 +1,240 @@
+<mxfile host="app.diagrams.net" modified="2026-01-01T00:00:00.000Z" agent="Draw.io" version="24.0.0" type="device">
+  <diagram name="Agent Architecture" id="agent-arch">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- 标题 -->
+        <mxCell id="title" value="Agent 架构图" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="600" y="20" width="400" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== 第一层：Plan-Execute Agent ==================== -->
+        <mxCell id="plan-execute" value="Plan-Execute Agent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f4f8;strokeColor=#4a90a4;fontSize=14;fontStyle=1;fontColor=#2c3e50;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="80" width="200" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- 从 Plan-Execute Agent 到子组件的连线 -->
+        <mxCell id="pe-line1" value="" style="endArrow=classic;html=1;strokeColor=#4a90a4;strokeWidth=2;" edge="1" parent="1" source="plan-execute" target="planner">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="140" y="150" as="sourcePoint" />
+            <mxPoint x="140" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Planner -->
+        <mxCell id="planner" value="Planner" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d4efdf;strokeColor=#27ae60;fontSize=12;fontStyle=1;fontColor=#1e5a3a;" vertex="1" parent="1">
+          <mxGeometry x="40" y="160" width="120" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Executor -->
+        <mxCell id="executor" value="Executor" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d4efdf;strokeColor=#27ae60;fontSize=12;fontStyle=1;fontColor=#1e5a3a;" vertex="1" parent="1">
+          <mxGeometry x="180" y="160" width="120" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Replanner -->
+        <mxCell id="replanner" value="Replanner" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d4efdf;strokeColor=#27ae60;fontSize=12;fontStyle=1;fontColor=#1e5a3a;" vertex="1" parent="1">
+          <mxGeometry x="320" y="160" width="120" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Plan-Execute 内部箭头 -->
+        <mxCell id="pe-arrow1" value="" style="endArrow=classic;html=1;strokeColor=#27ae60;" edge="1" parent="1" source="planner" target="executor">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="160" y="180" as="sourcePoint" />
+            <mxPoint x="180" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="pe-arrow2" value="" style="endArrow=classic;html=1;strokeColor=#27ae60;" edge="1" parent="1" source="executor" target="replanner">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="300" y="180" as="sourcePoint" />
+            <mxPoint x="320" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="pe-arrow3" value="" style="endArrow=classic;html=1;strokeColor=#27ae60;curved=1;" edge="1" parent="1" source="replanner" target="planner">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="380" y="180" as="sourcePoint" />
+            <mxPoint x="160" y="180" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="440" y="180" />
+              <mxPoint x="440" y="120" />
+              <mxPoint x="100" y="120" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ==================== 第二层：Sequential Agent ==================== -->
+        <mxCell id="sequential" value="Sequential Agent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fef9e4;strokeColor=#e6b91e;fontSize=14;fontStyle=1;fontColor=#5c4010;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="240" width="200" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Sequential 到 Agent as Tool -->
+        <mxCell id="seq-line" value="" style="endArrow=classic;html=1;strokeColor=#e6b91e;strokeWidth=2;" edge="1" parent="1" source="sequential" target="agent-as-tool">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="140" y="310" as="sourcePoint" />
+            <mxPoint x="140" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ==================== 第三层：Loop Agent ==================== -->
+        <mxCell id="loop" value="Loop Agent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fde6f2;strokeColor=#c0396a;fontSize=14;fontStyle=1;fontColor=#6c1d45;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="320" width="200" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Loop 到 Agent as Tool -->
+        <mxCell id="loop-line" value="" style="endArrow=classic;html=1;strokeColor=#c0396a;strokeWidth=2;" edge="1" parent="1" source="loop" target="agent-as-tool">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="140" y="390" as="sourcePoint" />
+            <mxPoint x="140" y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ==================== Agent as Tool（大框） ==================== -->
+        <mxCell id="agent-as-tool" value="Agent as Tool" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8e8f0;strokeColor=#7b8a9a;fontSize=16;fontStyle=1;fontColor=#2c3e50;shadow=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="40" y="420" width="200" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- 从 Agent as Tool 到下方三个 Agent 的连线 -->
+        <mxCell id="tool-line1" value="" style="endArrow=classic;html=1;strokeColor=#7b8a9a;strokeWidth=2;" edge="1" parent="1" source="agent-as-tool" target="code-agent">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="140" y="490" as="sourcePoint" />
+            <mxPoint x="140" y="520" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- CodeAgent -->
+        <mxCell id="code-agent" value="CodeAgent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cfe9f5;strokeColor=#2980b9;fontSize=12;fontStyle=1;fontColor=#154360;" vertex="1" parent="1">
+          <mxGeometry x="40" y="520" width="120" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- WebSearchAgent -->
+        <mxCell id="websearch-agent" value="WebSearchAgent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cfe9f5;strokeColor=#2980b9;fontSize=12;fontStyle=1;fontColor=#154360;" vertex="1" parent="1">
+          <mxGeometry x="180" y="520" width="120" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ReportAgent -->
+        <mxCell id="report-agent" value="ReportAgent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cfe9f5;strokeColor=#2980b9;fontSize=12;fontStyle=1;fontColor=#154360;" vertex="1" parent="1">
+          <mxGeometry x="320" y="520" width="120" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== Tools 区域 ==================== -->
+        <mxCell id="tools-title" value="Tools" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="600" y="80" width="100" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Tools 区域背景 -->
+        <mxCell id="tools-bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f0;strokeColor=#ccaa88;strokeWidth=2;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="120" width="580" height="480" as="geometry" />
+        </mxCell>
+
+        <!-- 第一行 Tools -->
+        <mxCell id="bash1" value="Bash" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe2cc;strokeColor=#e67e22;fontSize=12;fontStyle=1;fontColor=#7e3300;" vertex="1" parent="1">
+          <mxGeometry x="600" y="140" width="100" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tree1" value="Tree" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe2cc;strokeColor=#e67e22;fontSize=12;fontStyle=1;fontColor=#7e3300;" vertex="1" parent="1">
+          <mxGeometry x="730" y="140" width="100" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bash2" value="Bash" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe2cc;strokeColor=#e67e22;fontSize=12;fontStyle=1;fontColor=#7e3300;" vertex="1" parent="1">
+          <mxGeometry x="860" y="140" width="100" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tree2" value="Tree" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe2cc;strokeColor=#e67e22;fontSize=12;fontStyle=1;fontColor=#7e3300;" vertex="1" parent="1">
+          <mxGeometry x="990" y="140" width="100" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- SubmitResult -->
+        <mxCell id="submit-result" value="SubmitResult" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe2cc;strokeColor=#e67e22;fontSize=12;fontStyle=1;fontColor=#7e3300;" vertex="1" parent="1">
+          <mxGeometry x="600" y="220" width="120" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- PythonRunner -->
+        <mxCell id="python-runner" value="PythonRunner" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe2cc;strokeColor=#e67e22;fontSize=12;fontStyle=1;fontColor=#7e3300;" vertex="1" parent="1">
+          <mxGeometry x="760" y="220" width="120" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- WebSearch -->
+        <mxCell id="websearch" value="WebSearch" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe2cc;strokeColor=#e67e22;fontSize=12;fontStyle=1;fontColor=#7e3300;" vertex="1" parent="1">
+          <mxGeometry x="920" y="220" width="120" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ReadFile -->
+        <mxCell id="readfile" value="ReadFile" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe2cc;strokeColor=#e67e22;fontSize=12;fontStyle=1;fontColor=#7e3300;" vertex="1" parent="1">
+          <mxGeometry x="600" y="300" width="120" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- EditFile -->
+        <mxCell id="editfile" value="EditFile" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe2cc;strokeColor=#e67e22;fontSize=12;fontStyle=1;fontColor=#7e3300;" vertex="1" parent="1">
+          <mxGeometry x="760" y="300" width="120" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ReadFile 重复 -->
+        <mxCell id="readfile2" value="ReadFile" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe2cc;strokeColor=#e67e22;fontSize=12;fontStyle=1;fontColor=#7e3300;" vertex="1" parent="1">
+          <mxGeometry x="920" y="300" width="120" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- EditFile 重复 -->
+        <mxCell id="editfile2" value="EditFile" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe2cc;strokeColor=#e67e22;fontSize=12;fontStyle=1;fontColor=#7e3300;" vertex="1" parent="1">
+          <mxGeometry x="600" y="380" width="120" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ImageReader -->
+        <mxCell id="imagereader" value="ImageReader" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe2cc;strokeColor=#e67e22;fontSize=12;fontStyle=1;fontColor=#7e3300;" vertex="1" parent="1">
+          <mxGeometry x="760" y="380" width="120" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== 从 CodeAgent 到 Tools 的连接线 ==================== -->
+        <mxCell id="code-to-tools" value="" style="endArrow=classic;html=1;strokeColor=#7b8a9a;strokeWidth=1.5;dashed=1;" edge="1" parent="1" source="code-agent" target="tools-title">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="160" y="560" as="sourcePoint" />
+            <mxPoint x="650" y="110" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="160" y="580" />
+              <mxPoint x="480" y="580" />
+              <mxPoint x="480" y="110" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="websearch-to-tools" value="" style="endArrow=classic;html=1;strokeColor=#7b8a9a;strokeWidth=1.5;dashed=1;" edge="1" parent="1" source="websearch-agent" target="tools-title">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="240" y="560" as="sourcePoint" />
+            <mxPoint x="650" y="110" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="240" y="600" />
+              <mxPoint x="520" y="600" />
+              <mxPoint x="520" y="110" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="report-to-tools" value="" style="endArrow=classic;html=1;strokeColor=#7b8a9a;strokeWidth=1.5;dashed=1;" edge="1" parent="1" source="report-agent" target="tools-title">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="380" y="560" as="sourcePoint" />
+            <mxPoint x="650" y="110" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="380" y="620" />
+              <mxPoint x="550" y="620" />
+              <mxPoint x="550" y="110" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ==================== 左侧虚线框分组 ==================== -->
+        <!-- Sequential + Loop 的背景框 -->
+        <mxCell id="seq-loop-bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fafafa;strokeColor=#ccaa88;strokeWidth=1;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="220" width="240" height="170" as="geometry" />
+        </mxCell>
+
+        <!-- Agent as Tool 背景框 -->
+        <mxCell id="agent-tool-bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fafafa;strokeColor=#ccaa88;strokeWidth=1;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="400" width="440" height="180" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

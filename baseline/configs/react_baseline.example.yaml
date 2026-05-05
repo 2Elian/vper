@@ -1,0 +1,15 @@
+dataset:
+  root_path: G:\项目成果打包\kbbcup_dataAgent\demo_samples\input
+
+agent:
+  model: ark-code-latest
+  api_base: https://ark.cn-beijing.volces.com/api/coding/v3
+  api_key: 6003c970-0169-4513-8fd1-6750ffc5d194
+  max_steps: 16
+  temperature: 0.0
+
+run:
+  output_dir: artifacts/runs
+  run_id: example_run_id
+  max_workers: 8
+  task_timeout_seconds: 600
