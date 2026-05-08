@@ -1,8 +1,60 @@
+# ============ IDE 配置 ============
 /.idea
-/tests/other
-/task_11_trajectory.md
 /.vscode
-.env*
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ============ Python 缓存 ============
 __pycache__/
 *.py[cod]
 *$py.class
+*.so
+.Python
+
+# ============ 环境变量 ============
+.env*
+.venv/
+*.venv/
+venv/
+env/
+
+# ============ 运行产物（建议保留目录结构，忽略内容）============
+**/artifacts/
+**/baseline_test_res/
+output/
+*.log
+*.csv
+*.json
+
+# ============ 临时/测试文件 ============
+/tests/other/
+/task_11_trajectory.md
+reference/
+idea1/
+data/
+
+# ============ 提交包（大文件）============
+*.tar.gz
+*.zip
+*.rar
+*.7z
+submit-log/          # 如果不需要提交提交记录
+
+# ============ LaTeX 编译产物 ============
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.log
+paper/*.out
+paper/*.synctex.gz
+paper/*.fls
+paper/*.fdb_latexmk
+# paper/*.pdf     # 建议保留最终 PDF，或根据需要选择
+
+# ============ 配置文件（本地版本）============
+*.local.yaml
+*.local.yml
+**/settings.local.json
+*.tar.gz

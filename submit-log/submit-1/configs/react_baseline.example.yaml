@@ -2,14 +2,14 @@ dataset:
   root_path: /data1/nuist_llm/TrainLLM/kddCup/vper/data/input
 
 agent:
-  model: /data1/nuist_llm/TrainLLM/ModelCkpt/qwen3_6-35b-a3b
-  api_base: http://172.16.107.15:8000/v1
+  model: Qwen3.5-35B-A3B
+  api_base: http://172.0.0.1:8000/v1
   api_key: EMPTY
   max_steps: 30
   temperature: 0.0
 
 run:
   output_dir: artifacts/runs
-  run_id: baseline
+  run_id: idea16
   max_workers: 8
   task_timeout_seconds: 600

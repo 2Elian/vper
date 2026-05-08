@@ -1,53 +1,46 @@
-# V-PEP: Validator-Augmented Plan-Execute-Replan for Reliable Iterative Data Analytics
-<div align="center">
+# vper:
 
-![Python](https://img.shields.io/badge/Python-3.12+-green.svg)
-![Go](https://img.shields.io/badge/Go-1.26.1-red.svg)
-[![Paper](https://img.shields.io/badge/paper-arxiv-orange.svg)](https://github.com/2Elian/cra/issues)
-![Version](https://img.shields.io/badge/version-0.0.1-brightgreen.svg)
-[![Open Issues](https://img.shields.io/github/issues-raw/2Elian/cra)](https://github.com/2Elian/cra/issues)
+## 一定要解决的问题
 
-[![简体中文](https://img.shields.io/badge/简体中文-blue?style=for-the-badge&logo=book&logoColor=white)](./README_CN.md) 
-[![English](https://img.shields.io/badge/English-orange?style=for-the-badge&logo=language&logoColor=white)](./README.md)
-</div>
+### 1. 如何做plan 中间过程如何修正plan？
 
-<p align="center">
-  <img src="./draw/framework.drawio.svg" alt="V-PEP framework" width="800"/>
-</p>
+因为做plan的本质目的是：做一个复杂任务的时候，trajectory比较长的时候，会导致任务执行的时候跳步骤，
+所以需要一个全局plan来作为指导。而replan是在某些触发条件下(比如：有了新的发现、前面推理轨迹有问题)来修正plan，让模型按着正确的方向继续走下去。
 
----
+plan的问题是：一开始由于没有任何的上下文，只能生成比较简单的plan，比如：list_content、read_doc、read_json等。这些agent都能做的不错，而问题是，这些plan对后续真正核心的
+执行代码的时候，是没有帮助的。
 
-## Features
+#### trajectory修正
 
-Sentra aims to utilize graph structures to answer questions about the content of documents. All inquiries will be responded to based on the document graph and a relevant knowledge base.
+在react的时候，如果连续某个动作读一个文件>2次，或者一个动作连续失败，就要考虑修正trajectory了，即触发replan。
 
-* **User management**: Supports isolation of knowledge bases and Q&A systems in multi-tenant scenarios, with permission control based on sa-token;
-* **Knowledge base management**: Supports private and general knowledge bases. Supports parsing and management of knowledge bases in PDF format;
-* **Document-based Chat Service**: Graph the document, and all user questions will be answered based on this graph and the private domain + general database
-* **Native development**: pip install sentra sentra-core, Sentra is a completely natively developed document-to-knowledge base question-and-answer assistant.
+比如：在idea16的task11里面，连续出现了action或action_input不准的问题。这时候就要修正trajectory了
 
-## 🚀 Deployment
-
-### Quick Start with Docker Compose
-
-1.  Clone the repository:
-    ```bash
-    git clone https://github.com/2Elian/Sentra.git
-    cd Sentra
-    ```
-
-2.  Start the services:
-    ```bash
-    cd deploy/compose
-    docker-compose up -d
-    ```
-
-## Author
-![GitHub contributors](https://img.shields.io/github/contributors/2Elian/Sentra)
-
-**Sentra** is independently developed by Elian, an AI algorithm engineer. His research interests lie in post-training of LLM-RL and agent development.
+#### 新的发现
 
 
-## Star History
+### 2. 如何做并行控制？(解决的是串行的时候，执行速度慢的问题)
 
-[![Star History Chart](https://api.star-history.com/svg?repos=2Elian/Sentra&type=Date&theme=radical)](https://star-history.com/#2Elian/Sentra&Date)
+能够解决一部分任务的超时问题，目前idea16的超时任务有7个
+
+### 3. NL2SQL 更准
+
+### 4. 结果验证
+
+参考了openjudge的tot和trajectory混合验证模式(但是比较费token和时间啊)
+
+### 5. 速度上
+
+- 快慢思考模型
+- 自适应快满思考模型：简单任务快思考，复杂任务慢思考
+- 线程池并发控制做DAG
+
+### 6. 记忆上
+
+因为是数据分析任务，任何一个遗漏的数值都会导致结果的偏差。
+
+但在react mode中，如果不做记忆模式，对复杂的数据分析任务上下文就会爆炸，且注意力会偏差。
+
+所以一定要做记忆，且要安全的做记忆。
+
+我想把记忆压缩到skill里面，然后数值数据放到sqlite中（命名在skill定义），然后这个数值数据给一个摘要是干什么的，然后这样模型就能按需索取了。然后前置给一个摘要，前面都干了什么，接下来应该干什么。
