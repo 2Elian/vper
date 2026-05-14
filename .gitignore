@@ -58,3 +58,5 @@ paper/*.fdb_latexmk
 *.local.yml
 **/settings.local.json
 *.tar.gz
+uv
+uvx

@@ -52,8 +52,46 @@ def _save_trace(path: Path, run_result: dict) -> None:
         pass
 
 
+def _repair_json(text: str) -> str:
+    """Auto-repair common LLM JSON errors such as missing closing braces/brackets."""
+    stack: list[str] = []
+    in_string = False
+    escape = False
+
+    for ch in text:
+        if escape:
+            escape = False
+            continue
+        if ch == "\\" and in_string:
+            escape = True
+            continue
+        if ch == '"':
+            in_string = not in_string
+            continue
+        if in_string:
+            continue
+        if ch in "{[":
+            stack.append(ch)
+        elif ch == "]":
+            if stack and stack[-1] == "[":
+                stack.pop()
+        elif ch == "}":
+            if stack and stack[-1] == "{":
+                stack.pop()
+
+    closing = []
+    for ch in reversed(stack):
+        closing.append("}" if ch == "{" else "]")
+    return text + "".join(closing)
+
+
 def _load_single_json_object(text: str) -> dict[str, object]:
-    payload, end = json.JSONDecoder().raw_decode(text)
+    try:
+        payload, end = json.JSONDecoder().raw_decode(text)
+    except json.JSONDecodeError:
+        text = _repair_json(text)
+        payload, end = json.JSONDecoder().raw_decode(text)
+
     remainder = text[end:].strip()
     if remainder:
         cleaned_remainder = re.sub(r"(?:\\[nrt])+", "", remainder).strip()

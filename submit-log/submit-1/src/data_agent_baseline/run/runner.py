@@ -15,7 +15,8 @@ from time import perf_counter
 from typing import Any
 
 from data_agent_baseline.agents.model import OpenAIModelAdapter
-from data_agent_baseline.agents.plan_react import PlanReActAgent, PlanReActAgentConfig
+from data_agent_baseline.agents.plan_replan import Agent
+from data_agent_baseline.agents.plan_replan import AgentConfig
 from data_agent_baseline.benchmark.dataset import DABenchPublicDataset
 from data_agent_baseline.config import AppConfig, DatasetConfig, RunConfig, load_app_config
 from data_agent_baseline.tools.registry import ToolRegistry, create_default_tool_registry
@@ -111,12 +112,11 @@ def _run_single_task_core(
     task = public_dataset.get_task(task_id)
 
     # Use PlanReActAgent with trace saving
-    agent = PlanReActAgent(
+    agent = Agent(
         model=model or build_model_adapter(config),
         tools=tools or create_default_tool_registry(),
-        config=PlanReActAgentConfig(
+        config=AgentConfig(
             max_steps=config.agent.max_steps,
-            verify_before_answer=True,
             trace_save_path=trace_save_path,
         ),
     )
